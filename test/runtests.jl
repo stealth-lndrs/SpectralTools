@@ -1,4 +1,5 @@
 using Test
 using SpectralTools
 
-include("test_chebyshev_lobatto_quadrature.jl")
+include("test_cheb.jl")
+include("test_poisson2D.jl")
