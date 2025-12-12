@@ -50,6 +50,11 @@
             <p>Gaussian pulse reflecting on a Dirichlet boundary while the left endpoint enforces Neumann zero flux.</p>
             <img src="../assets/wave_reflection.gif" alt="Wave reflection gif" />
           </div>
+          <div class="card">
+            <h3>Chebyshev Quadrature</h3>
+            <p>Gauss/Lobatto rules (`chebyshev_quadrature`) reproducing ∫<sub>0</sub><sup>1</sup> e<sup>x</sup> dx and ∫<sub>-1</sub><sup>1</sup> cos(3x) dx to machine precision.</p>
+            <pre><code>I_gauss = chebyshev_gauss_integral(exp, 32; domain=(0,1))</code></pre>
+          </div>
         </div>
       </section>
 

@@ -155,4 +155,14 @@ end
         left_flux = dot(view(grid.D1, 1, :), sol.u[:, end])
         @test isapprox(left_flux, flux(sol.t[end]); atol = 5e-3)
     end
+
+    @testset "Chebyshev quadrature" begin
+        f(x) = exp(x)
+        integral = chebyshev_gauss_integral(f, 48; domain = (0.0, 1.0))
+        @test abs(integral - (ℯ - 1)) < 1e-10
+
+        g(x) = cos(3x)
+        integral2 = chebyshev_lobatto_integral(g, 64; domain = (-1.0, 1.0))
+        @test abs(integral2 - (sin(3) - sin(-3)) / 3) < 1e-10
+    end
 end

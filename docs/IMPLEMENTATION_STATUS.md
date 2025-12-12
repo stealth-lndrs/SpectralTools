@@ -19,14 +19,15 @@ below when preparing scripts, documentation, and automated tests.
 | 1 | Chebyshev linear BVP | `examples/bvp_linear.jl`, `bvp_linear_solution.*` | Variable diffusivity `-(1+x)y'' = sin(πx)` solved on Chebyshev grid, residuals benchmarked against high-N reference. | `PE_Aula_05_N.pdf` |
 | 2 | Diffusion decay | `examples/diffusion.jl`, `diffusion_decay.*` | Heat equation with analytic solution; MOL + RK4 integration, GIF of decay, error reported at \(t=0.05\). | `PE_Aula_06_N.pdf` |
 | 3 | Legendre vs Chebyshev | `examples/bvp_legendre.jl`, `bvp_legendre_error.png` | Legendre Lobatto solution compared to Chebyshev reference via `Generic.Bary_Interp`, log–log convergence study. | `PE_Aula_07_N.pdf`, `PE_Aula_08_N.pdf` |
-| 4 | Nonlinear BVP (`y'' = \sin y`) | `examples/bvp_nonlinear.jl`, `bvp_nonlinear_solution.png` | Newton iteration with analytic derivatives, residual norm < 1e-13, iteration count recorded. | `PE_Aula_06_N.pdf` |
-| 5 | Wave mixed BCs | `examples/wave_mixed_bc.jl`, `wave_mode.*` | Leapfrog with Neumann/Dirichlet boundaries, energy drift analysis, boundary flux verification. | `PE_Aula_10_N.pdf` |
+| 4 | Nonlinear BVP (`y'' = \sin y`) | `examples/bvp_nonlinear.jl`, `examples/newton_bvp.jl`, `bvp_nonlinear_solution.png` | Newton iteration with analytic derivatives and inhomogeneous BCs. | `PE_Aula_06_N.pdf` |
+| 5 | Wave mixed BCs | `examples/wave_mixed_bc.jl`, `wave_mode.*`, `wave_standing.gif` | Leapfrog with Neumann/Dirichlet boundaries, energy drift analysis, boundary flux verification. | `PE_Aula_10_N.pdf` |
+| 6 | Wave pulse reflection | `examples/wave_mixed_bc.jl` (pulse block), `wave_reflection.gif` | Gaussian pulse reflecting off Dirichlet wall with Neumann zero flux on the opposite end. | `PE_Aula_10_N.pdf` |
+| Bonus | Chebyshev quadrature integrals | `examples/quadrature.jl` | Gauss/Lobatto rules reproducing \(\int_0^1 e^x dx\) and \(\int_{-1}^1 \cos(3x) dx\) with \(<10^{-10}\) error, referencing quadrature lecture notes. | `PE_Aula_05_N.pdf`, `PE_Aula_09_N.pdf` |
 
 ### Missing
 
 | # | Scenario | Requirements | Slide references |
 | --- | --- | --- | --- |
-| 6 | Wave propagation with traveling pulse | Implement `examples/wave_pulse.jl` launching a Gaussian pulse `u(x,0) = exp(-50(x+0.5)^2)` with initial velocity `u_t = -c u_x`, Dirichlet BCs on both ends, dt study showing stable vs unstable CFL choices, and optional sponge forcing. Plot snapshots and CFL error table. | `PE_Aula_10_N.pdf` (pp. 2–3) |
 | 7 | Diffusion with source forcing | Create `examples/diffusion_forced.jl` solving `u_t = 0.1 u_xx + e^{-t} cos(πx)` on `[-1,1]`, Dirichlet zero walls, initial state zero. Track total “mass” (`∫ u dx`) vs injected energy and compare against a high-resolution finite difference reference. | `PE_Aula_06_N.pdf` (forcing discussion) |
 | 8 | Poisson on square | Add `examples/poisson_square.jl` reproducing the manufactured solution `sin(π(x+1)/2) sin(π(y+1)/2)` with Dirichlet BCs. Report convergence when increasing `Nx = Ny`. Include surface/heatmap plots. | `PE_Aula_09_N.pdf` (Programa 16) |
 | 9 | Poisson on rectangular domain | Implement `examples/poisson_rectangle.jl` on `x ∈ [-1, 2]`, `y ∈ [0, 1]` with a manufactured solution (e.g., `sin(π(x+1)/3) sinh(π y)`), emphasizing how scaling impacts `Dx²`, `Dy²`. Include anisotropic grid study. | `PE_Aula_09_N.pdf` (pp. 8–13) |
@@ -50,6 +51,7 @@ below when preparing scripts, documentation, and automated tests.
 | 3 | Nonlinear BVP convergence | “Nonlinear BVP convergence” | Newton converges ≤ 8 iterations, residual < 1e-8. | Example 4 |
 | 4 | Diffusion analytic comparison | “Diffusion analytic comparison” | MOL + RK4 error vs analytic solution + time-step refinement ratio. | Example 2 |
 | 5 | Wave energy mixed BCs | “Wave energy mixed BCs” | Energy drift bound and Neumann flux agreement for Example 5. | Example 5 |
+| Bonus | Chebyshev quadrature | “Chebyshev quadrature” | Gauss/Lobatto weights integrate \(e^x\) and \(\cos(3x)\) within tolerance, nodes lie inside domain bounds. | Bonus example |
 
 ### Missing
 

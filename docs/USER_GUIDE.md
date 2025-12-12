@@ -92,6 +92,30 @@ Use for problems of the form `y'' = g(x, y, y')`. Analytical derivatives speed
 up Newton; if omitted, finite differences are used. Inspect `sol.converged` and
 `sol.iterations` before trusting the result.
 
+Examples:
+
+- `examples/bvp_nonlinear.jl` solves \(y'' = \sin y\) with inhomogeneous Dirichlet data using damping.
+- `examples/newton_bvp.jl` solves \(y'' + y^3 = \cos(\pi x)\) and demonstrates how to provide analytic Jacobian entries.
+
+### Spectral Quadrature
+
+Use the `PoliSpectralTools.Quadrature` helpers to approximate definite integrals
+with Chebyshev–Gauss or Chebyshev–Lobatto rules on arbitrary intervals.
+
+```julia
+using PoliSpectralTools.Quadrature
+
+I_gauss = chebyshev_gauss_integral(exp, 32; domain = (0.0, 1.0))
+I_lob   = chebyshev_lobatto_integral(x -> cos(3x), 48; domain = (-1.0, 1.0))
+
+nodes, weights = chebyshev_quadrature(40; kind = :lobatto, domain = (-2, 2))
+approx = sum(weights .* sin.(nodes))
+```
+
+- `chebyshev_quadrature(N; kind, domain)` returns nodes/weights (Gauss or Lobatto) scaled to the specified domain.
+- `chebyshev_gauss_integral(f, N; domain)` / `chebyshev_lobatto_integral(f, N; domain)` integrate callable `f` directly.
+- Example script: `examples/quadrature.jl`, highlighted in `docs/USAGE_EXAMPLES.md`.
+
 ### Diffusion (Method of Lines + RK4)
 
 ```julia
@@ -150,9 +174,10 @@ Provides `x`, `y`, `u` arrays with BCs imposed and interior solved via
 | 1 | Chebyshev linear BVP | `examples/bvp_linear.jl`, `Usage-driven Tests` set 1 | ✅ |
 | 2 | Diffusion decay (Dirichlet) | `examples/diffusion.jl`, test suite entry | ✅ |
 | 3 | Legendre linear BVP | `examples/bvp_legendre.jl`, Legendre grid test | ✅ |
-| 4 | Nonlinear BVP Newton | `examples/bvp_nonlinear.jl`, convergence test | ✅ |
+| 4 | Nonlinear BVP Newton | `examples/bvp_nonlinear.jl`, `examples/newton_bvp.jl`, convergence test | ✅ |
 | 5 | Wave mixed BCs | `examples/wave_mixed_bc.jl`, energy test | ✅ |
 | 6 | Traveling pulse wave | _Pending script/test_ | ⬜ |
+| Bonus | Chebyshev quadrature integrals | `examples/quadrature.jl`, validation snippet | ✅ |
 | 7 | Forced diffusion | _Pending script/test_ | ⬜ |
 | 8 | Poisson square | _Pending script/test_ | ⬜ |
 | 9 | Poisson rectangular domain | _Pending script/test_ | ⬜ |

@@ -120,6 +120,14 @@ The error plateau for \(N\ge 20\) comes from machine precision rather than the b
   - Solution profile: ![Nonlinear BVP](assets/bvp_nonlinear_solution.png)
   - Residual norm: \( \|D_2 y - \sin(y)\|_\infty < 10^{-13}\).
   - Newton converges in four steps thanks to the analytic Jacobian and good initial guess.
+  - Additional scenario (`examples/newton_bvp.jl`): solve \(y'' + y^3 = \cos(\pi x)\) with \(y(-1)=0.2\), \(y(1)=-0.1\) using
+    ```julia
+    g(x,y,yp) = cospi(x) - y^3
+    solve_nonlinear_bvp(g; dg_dy = (x,y,yp)->-3y^2,
+        bc = (left = (:dirichlet, 0.2), right = (:dirichlet, -0.1)),
+        initial_guess = x -> 0.2 - 0.15 * (x + 1))
+    ```
+    which also converges within a handful of Newton iterations.
 
 ---
 
@@ -173,6 +181,21 @@ The error plateau for \(N\ge 20\) comes from machine precision rather than the b
 
 ---
 
+## Bonus – Chebyshev Quadrature Integrals
+
+- **Problem statement**: Evaluate \(\int_0^1 e^x\,dx = e - 1\) and \(\int_{-1}^1 \cos(3x)\,dx = (\sin 3 - \sin(-3))/3\) using spectral quadrature.
+- **Method**:
+  - Use `chebyshev_quadrature` with `kind = :gauss` (32 nodes) for the exponential integral on `(0,1)`.
+  - Use `chebyshev_lobatto_integral` (48 nodes) for the cosine integral on `(-1,1)`.
+- **Code** (`examples/quadrature.jl`):
+  ```julia
+  I_gauss = chebyshev_gauss_integral(exp, 32; domain = (0.0, 1.0))
+  I_lob = chebyshev_lobatto_integral(x -> cos(3x), 48; domain = (-1.0, 1.0))
+  ```
+- **Results**: Both integrals match their analytic values to within \(10^{-10}\), demonstrating how to reuse the package's quadrature routines.
+
+---
+
 ## File Map
 
 | Example | Scripts | Visuals/GIFs | Slide Reference |
@@ -180,9 +203,10 @@ The error plateau for \(N\ge 20\) comes from machine precision rather than the b
 | 1 | `examples/bvp_linear.jl` | `bvp_linear_solution.png` | PE_Aula_05_N.pdf |
 | 2 | `examples/diffusion.jl` | `diffusion_decay.png`, `diffusion_decay.gif` | PE_Aula_06_N.pdf |
 | 3 | `examples/bvp_legendre.jl` | `bvp_legendre_error.png` | PE_Aula_07/08_N.pdf |
-| 4 | `examples/bvp_nonlinear.jl` | `bvp_nonlinear_solution.png` | PE_Aula_06_N.pdf |
+| 4 | `examples/bvp_nonlinear.jl`, `examples/newton_bvp.jl` | `bvp_nonlinear_solution.png` | PE_Aula_06_N.pdf |
 | 5 | `examples/wave_mixed_bc.jl` | `wave_mode.png`, `wave_standing.gif` | PE_Aula_10_N.pdf |
 | 6 | `examples/wave_mixed_bc.jl` (pulse branch) | `wave_reflection.gif` | PE_Aula_10_N.pdf |
+| Bonus | `examples/quadrature.jl` | – | PE_Aula_05_N.pdf / PE_Aula_09_N.pdf |
 
 For reproducibility, run `julia --project=. include("examples/<name>.jl")` and then open the
 corresponding assets in `docs/assets/`.  The markdown above is mirrored in HTML at
