@@ -13,3 +13,8 @@ Test = "8dfed614-e22c-5e08-85e1-65c5234f0b50"
 
 [targets]
 test = ["Test"]
+
+[compat]
+julia = "1.9"
+FFTW = "1"
+ToeplitzMatrices = "0.8"
