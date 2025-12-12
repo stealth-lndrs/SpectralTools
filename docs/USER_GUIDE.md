@@ -1,3 +1,8 @@
+---
+layout: default
+title: "PoliSpectralTools User Guide"
+---
+
 # PoliSpectralTools.jl – User Guide
 
 This guide explains how to install PoliSpectralTools, summarizes the major modules,

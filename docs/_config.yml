@@ -2,6 +2,7 @@ title: "PoliSpectralTools"
 description: "Spectral collocation toolbox (Chebyshev/Legendre) for BVPs and PDEs."
 theme: jekyll-theme-cayman
 markdown: kramdown
+mathjax: true
 kramdown:
   math_engine: mathjax
 plugins: []

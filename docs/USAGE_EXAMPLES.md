@@ -1,3 +1,9 @@
+---
+layout: default
+title: "Detailed Usage Examples"
+mathjax: true
+---
+
 # PoliSpectralTools – Usage Examples (Detailed)
 
 This note expands on the five implemented showcase problems.  For each example we
