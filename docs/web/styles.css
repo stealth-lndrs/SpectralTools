@@ -51,13 +51,13 @@ a:hover {
   border-bottom: 1px solid rgba(148, 163, 184, 0.3);
   padding-bottom: 1.5rem;
 }
-figure {
-  margin: 1rem 0;
-}
-figure img {
+.card img {
   width: 100%;
+  max-width: 100%;
+  height: auto;
   border-radius: 10px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  margin-top: 0.8rem;
 }
 blockquote {
   border-left: 4px solid var(--accent);

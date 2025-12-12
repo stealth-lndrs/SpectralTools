@@ -40,7 +40,7 @@ julia> using Pkg; Pkg.instantiate()
 | Boundary conditions | Normalization utilities handling Dirichlet/Neumann/Robin specs (numbers or callables). |
 | BVP solvers | `solve_linear_bvp`, `solve_nonlinear_bvp` (Newton with optional analytic derivatives). |
 | PDE solvers | Diffusion (MOL + RK4), wave (leapfrog with mixed BCs), Poisson 2D (Kronecker). |
-| Examples | Five scripts covering Chebyshev BVP, diffusion decay, Legendre comparison, nonlinear BVP, and wave propagation. |
+| Examples | Five scripts covering Chebyshev BVP, diffusion decay, Legendre comparison, nonlinear BVP, wave propagation, plus layered animations (standing wave and pulse reflection). |
 | Testing/reporting | `test/runtests.jl` plus `scripts/run_full_report.jl` (console + markdown report, optional coverage). |
 
 ---

@@ -708,7 +708,7 @@ version = "1.41.2"
     Unitful = "1986cc42-f94f-5a68-af5c-568840ba703d"
 
 [[deps.PoliSpectralTools]]
-deps = ["FFTW", "LinearAlgebra", "ToeplitzMatrices"]
+deps = ["FFTW", "LinearAlgebra", "Plots", "ToeplitzMatrices"]
 path = "."
 uuid = "e5870fb4-0785-4c2b-93f1-21089c9623d1"
 version = "0.2.0"

@@ -37,8 +37,18 @@
           </div>
           <div class="card">
             <h3>Wave Mixed BCs</h3>
-            <p>Leapfrog integration with Neumann/Dirichlet boundaries; observe energy drift from boundary work.</p>
-            <img src="../assets/wave_mode.gif" alt="Wave gif" />
+            <p>Standing wave driven by Neumann flux on one end, Dirichlet clamp on the other.</p>
+            <img src="../assets/wave_standing.gif" alt="Wave standing gif" />
+          </div>
+          <div class="card">
+            <h3>Poisson (Class Forcing)</h3>
+            <p>Homework forcing from PE_Aula_09_N.pdf: <code>f(x,y) = 10 sin(8 x (y-1))</code> with zero Dirichlet BCs.</p>
+            <img src="../assets/poisson_hw9_surface.png" alt="Poisson homework surface" />
+          </div>
+          <div class="card">
+            <h3>Wave Pulse Reflection</h3>
+            <p>Gaussian pulse reflecting on a Dirichlet boundary while the left endpoint enforces Neumann zero flux.</p>
+            <img src="../assets/wave_reflection.gif" alt="Wave reflection gif" />
           </div>
         </div>
       </section>

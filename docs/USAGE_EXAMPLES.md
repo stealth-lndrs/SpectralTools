@@ -102,24 +102,24 @@ The error plateau for \(N\ge 20\) comes from machine precision rather than the b
 ## 4. Nonlinear BVP with Newton Damping
 
 - **Problem statement** (PE_Aula_06_N Newton flow): Solve \(y'' = \sin(y)\) on
-  \([-1,1]\) with homogeneous Dirichlet data. The nonlinear residual is
+  \([-1,1]\) with inhomogeneous Dirichlet data \(y(-1)=0\), \(y(1)=0.7\). The residual is
   \(F(y)=D_2 y - \sin(y)\).
 - **Method**:
   - Collocation on Chebyshev nodes (N=80).
   - Provide analytic derivatives \(\partial g/\partial y = \cos(y)\),
     \(\partial g/\partial y' = 0\).
-  - Use `solve_nonlinear_bvp` with default damping; the initial guess 0 already
-    satisfies the BCs.
+  - Use `solve_nonlinear_bvp` with a linear initial guess matching the boundary data.
 - **Code** (`examples/bvp_nonlinear.jl`):
   ```julia
   g(x,y,yp) = sin(y)
   sol = solve_nonlinear_bvp(g; dg_dy = (x,y,yp)->cos(y), N = 48,
-      bc = (left = (:dirichlet, 0.0), right = (:dirichlet, 0.0)))
+      bc = (left = (:dirichlet, 0.0), right = (:dirichlet, 0.7)),
+      initial_guess = x -> 0.35 * (x + 1))
   ```
 - **Results**:
   - Solution profile: ![Nonlinear BVP](assets/bvp_nonlinear_solution.png)
   - Residual norm: \( \|D_2 y - \sin(y)\|_\infty < 10^{-13}\).
-  - Newton required only a single iteration due to symmetry and the analytic Jacobian.
+  - Newton converges in four steps thanks to the analytic Jacobian and good initial guess.
 
 ---
 
@@ -144,10 +144,32 @@ The error plateau for \(N\ge 20\) comes from machine precision rather than the b
   ```
 - **Results**:
   - Snapshot + animation:
-    ![Wave snapshot](assets/wave_mode.png) ![Wave GIF](assets/wave_mode.gif)
+    ![Wave snapshot](assets/wave_mode.png) ![Wave GIF](assets/wave_standing.gif)
   - Energy drift over \(t\in[0,0.2]\): 17.9%.  The non-zero Neumann work injects
     energy, so this drift matches the analytical expectation from the slides.
   - Boundary flux residual at \(x=-1\) stays within \(5\times10^{-3}\) of the prescribed value.
+
+---
+
+## 6. Wave Pulse with Reflection (Dirichlet/Neumann)
+
+- **Problem statement** (PE_Aula_10_N reflection example): Launch a Gaussian pulse
+  \(u(x,0) = 0.5 \exp(-40(x+0.3)^2)\) with zero initial velocity. Impose Neumann zero flux on the left boundary (\(u_x(-1,t)=0\)) and Dirichlet zero on the right (\(u(1,t)=0\)).
+- **Method**:
+  - Same PDE \(u_{tt} = u_{xx}\) on \([-1,1]\).
+  - `solve_wave_1d` with `N = 80`, `dt = 2/400`, `c = 1`, `basis = :chebyshev`,
+    `domain = (-1,1)`, `bc = (left = (:neumann, 0.0), right = (:dirichlet, 0.0))`.
+  - The pulse travels left, reflects on the Dirichlet boundary, and returns with inverted sign.
+- **Code** (`examples/wave_mixed_bc.jl`, final block):
+  ```julia
+  u0_pulse(x) = 0.5 * exp(-40 * (x + 0.3)^2)
+  v0_pulse(x) = zero(x)
+  bc_pulse = (left = (:neumann, (x,t)->0.0), right = (:dirichlet, 0.0))
+  pulse = solve_wave_1d(u0_pulse, v0_pulse, (0.0, 2.0);
+      N = 80, dt = 2/400, c = 1.0, bc = bc_pulse)
+  ```
+- **Results**:
+  - Animation of the pulse reflecting and traveling back: ![Wave reflection](assets/wave_reflection.gif)
 
 ---
 
@@ -159,7 +181,8 @@ The error plateau for \(N\ge 20\) comes from machine precision rather than the b
 | 2 | `examples/diffusion.jl` | `diffusion_decay.png`, `diffusion_decay.gif` | PE_Aula_06_N.pdf |
 | 3 | `examples/bvp_legendre.jl` | `bvp_legendre_error.png` | PE_Aula_07/08_N.pdf |
 | 4 | `examples/bvp_nonlinear.jl` | `bvp_nonlinear_solution.png` | PE_Aula_06_N.pdf |
-| 5 | `examples/wave_mixed_bc.jl` | `wave_mode.png`, `wave_mode.gif` | PE_Aula_10_N.pdf |
+| 5 | `examples/wave_mixed_bc.jl` | `wave_mode.png`, `wave_standing.gif` | PE_Aula_10_N.pdf |
+| 6 | `examples/wave_mixed_bc.jl` (pulse branch) | `wave_reflection.gif` | PE_Aula_10_N.pdf |
 
 For reproducibility, run `julia --project=. include("examples/<name>.jl")` and then open the
 corresponding assets in `docs/assets/`.  The markdown above is mirrored in HTML at
